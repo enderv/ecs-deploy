@@ -4,6 +4,8 @@ This is an app to make it easier to update the image of already created ECS task
 
 
 ### Installation
+[![Build Status](https://travis-ci.org/enderv/ecs-deploy.svg?branch=master)](https://travis-ci.org/enderv/awsmfa-go)
+
 Download a release and put the binary on your path.
 
 ### To Use
