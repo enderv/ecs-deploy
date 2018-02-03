@@ -19,11 +19,18 @@ func main() {
 	family := flag.String("family", "", "Task Family - if not provided service name is used")
 	service := flag.String("service", "service", "ECS Service to update")
 	container := flag.String("container", "", "container to update (for use with multi container tasks)")
+	memory := flag.Int64("memory", -1, "Update Memory -1 means ignored")
+	cpu := flag.Int64("cpu", -1, "Update CPU -1 means ignored")
 	image := flag.String("image", "image", "Image to run")
 	nowait := flag.Bool("noWait", false, "Disable waiting")
 	count := flag.Int64("count", -1, "Number of desired -1 means ignored")
 	credFile := flag.String("credFile", filepath.Join(getCredentialPath(), ".aws", "credentials"), "Full path to credentials file")
 	flag.Parse()
+
+	if *service == "service" {
+		fmt.Println("You must provide a service name")
+		return
+	}
 
 	//Get Current Credentials
 	exists, err := checkProfileExists(credFile, profile)
@@ -50,7 +57,7 @@ func main() {
 		task = currentTask
 	}
 	if image != nil {
-		arn, err = c.RegisterTaskDefinition(family, task, container, image)
+		arn, err = c.RegisterTaskDefinition(family, task, container, image, memory, cpu)
 		if err != nil {
 			logger.Printf("[error] register task definition: %s\n", err)
 			return
