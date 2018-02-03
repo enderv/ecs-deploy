@@ -19,7 +19,7 @@ type ECSClient struct {
 	pollInterval time.Duration
 }
 
-// New Initialize a client
+// NewECSClient Initialize a client
 func NewECSClient(region *string, logger *log.Logger, profileName *string) *ECSClient {
 	sess := session.Must(session.NewSessionWithOptions(session.Options{
 		Profile: *profileName,
@@ -34,7 +34,7 @@ func NewECSClient(region *string, logger *log.Logger, profileName *string) *ECSC
 }
 
 // RegisterTaskDefinition updates the existing task definition's image.
-func (c *ECSClient) RegisterTaskDefinition(family, task, name, image *string) (string, error) {
+func (c *ECSClient) RegisterTaskDefinition(family, task, name, image *string, memory *int64, cpu *int64) (string, error) {
 	taskDef, err := c.GetTaskDefinition(task)
 	if err != nil {
 		return "", err
@@ -44,6 +44,12 @@ func (c *ECSClient) RegisterTaskDefinition(family, task, name, image *string) (s
 	for _, d := range taskDef.ContainerDefinitions {
 		if strings.Contains(*d.Name, *name) {
 			d.Image = image
+		}
+		if *cpu != -1 {
+			d.Cpu = cpu
+		}
+		if *memory != -1 {
+			d.MemoryReservation = memory
 		}
 	}
 
@@ -127,7 +133,6 @@ func (c *ECSClient) GetTaskDefinition(task *string) (*ecs.TaskDefinition, error)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Print(output)
 	return output.TaskDefinition, nil
 }
 
