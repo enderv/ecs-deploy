@@ -23,12 +23,16 @@ Currently supported
         container to update (for use with multi container tasks)
   -count int
         Number of desired -1 means ignored (default -1)
+  -cpu int
+        Update CPU -1 means ignored (default -1)
   -credFile string
-        Full path to credentials file (default "C:\\Users\\chris\\.aws\\credentials")
+        Full path to credentials file (default "C:\\Users\\cvodak\\.aws\\credentials")
   -family string
         Task Family - if not provided service name is used
   -image string
         Image to run (default "image")
+  -memory int
+        Update Memory -1 means ignored (default -1)
   -noWait
         Disable waiting
   -profile string

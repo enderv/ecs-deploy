@@ -138,14 +138,12 @@ func (c *ECSClient) GetTaskDefinition(task *string) (*ecs.TaskDefinition, error)
 
 // GetCurrentTaskDefinition get current task arn for a service
 func (c *ECSClient) GetCurrentTaskDefinition(cluster *string, service *string) (*string, error) {
-	fmt.Print(*cluster)
 	output, err := c.svc.DescribeServices(&ecs.DescribeServicesInput{
 		Cluster: cluster,
 		Services: []*string{
 			service,
 		},
 	})
-	fmt.Print(output)
 	if err != nil {
 		return nil, err
 	}
